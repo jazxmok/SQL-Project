@@ -1,0 +1,16 @@
+--DQL Practice Question --
+
+1. 
+SELECT * FROM EMPLOYEE WHERE gender ="女” and AGE IN(20,21,22,23);
+
+2. 
+SELECT * FROM EMPLOYEE WHERE GENDER = "男" and age between 20 and 40 and order by name like (---);
+
+3. 
+SELECT GENDER, COUNT(*) FROM EMPLOYEE WHERE AGE <60 GROUP BY GENDER ;
+
+4. 
+SELECT NAME, AGE FROM EMPLOYEE WHERE AGE <=35 ORDER BY AGE ASC , ENTRYDATE DESC;
+
+5.
+SELECT * FROM EMPLOYEE WHERE GENDER = "男“ and age between 20 and 40 order by age , entrydate asc limit 5;

@@ -1,0 +1,32 @@
+DML Command
+
+--Example
+--DML 给指定字段添加数据
+INSERT INTO localhost(字段名1，字段名2) VALUES (值1，值2）；
+
+--DML 给全部字段添加数据
+INSERT INTO 表名 VALUES(值1， 值2）
+
+--DML 批量添加数据
+INSERT INTO 表名（字段名1，字段名2） VALUES (值1， 值2），（值1，值2），（值1，值2）；
+INSERT INTO 表名 VALUES (值1，值2），（值1，值2），（值1，值2）；
+
+--DML 修改数据
+UPDATE  表名 SET 字段名1 = 值1， 字段名2 = 值2， [WHERE 条件]
+
+
+--修改id 为1 的数据，将name修改为itheima
+UPDATE employee set name = "Itheima" where id=1
+
+--修改id为1的数据，将name修改所谓小明，gender修改为女
+UPDATE employee set name = "小明" , gender = ”女“ ， where id =1;
+
+--将所有的员工日期修改为 2008-01-01 [Everyone in the Table]
+UPDATE employee set entrydate = "2008-01-01";
+
+
+--删除gender 为女的员工
+DELETE FROM EMPLOYEE WHERE GENDER = "女”；
+
+--删除全部员工
+DELETE FROM EMPLOYEE;

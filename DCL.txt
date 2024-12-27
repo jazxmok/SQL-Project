@@ -1,0 +1,36 @@
+--DCL (Data Control Language)
+
+-- 查询用户
+USE mySQL;
+SELECT * FROM user;
+
+--创建用户
+CREATE USER "用户名@主机名” identified by “密码“
+
+--修改用户密码
+ALTER USER "用户名@主机名” IDENTIFIED WITH my_sql_native_password BY ”新密码“；
+
+-- 删除用户
+DROP USER " 用户” @"主机名";
+
+--创建用户 itcast，只能够在当前主机localhost 访问，密码123456
+create user "itcast" @"localhost" identified by "123456";
+
+--创建用户 heima, 可以在任意的主机访问数据库，密码123456；
+CREATE USER "HEIMA" @ %" IDENTIFIED BY "123456";
+
+--修改用户heima 为 123456；
+ALTER USER "HEIMA" @"%" IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY "1234"
+
+--删除ITCAST@LOCALHOST 用户
+drop user "itcast" @ "localhost";
+
+-- 查询权限
+show grants for "heima" @"%";
+
+--授予权限
+grant all on itcast.* to heima;
+
+--撤销权限
+revoke all on itcast.* from "heima"@"%";
+

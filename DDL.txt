@@ -1,0 +1,40 @@
+DDL Command
+-- using MySQL 
+USE mySQL;
+
+--create table in localhost
+CREATE TABLE localhost(
+   ID int,
+   workno varchar(10),
+   name varchar(10),
+   gender char(1),
+   age tinyint unsigned,
+   idcard char(18),
+   entrydate date
+);
+
+
+--add new table for localhost
+ALTER TABLE localhost add nickname varchar(20); 
+
+--describe for localhost
+desc localhost;
+
+-- change DDL function
+ALTER TABLE localhost CHANGE nickname username varchar(30);
+
+--drop DDL function
+ALTER TABLE localhost drop username;
+
+--change table name 
+ALTER TABLE localhost RENAME to employee;
+
+-- Show Tables
+Show Tables;
+
+--Drop Table
+DROP TABLE if exists localhost;
+
+--TRUNCATE TABLE
+TRUNCATE TABLE localhost;
+

@@ -1,0 +1,100 @@
+--DQL Data Query Language
+-- DQL 查询数据语言，用来数据库中表的查询
+
+关键词 SELECT
+
+DQL 语法
+
+SELECT 
+   字段列表
+FROM
+   表名列表
+WHERE
+   条件列表
+GROUP BY
+   分组字段列表
+HAVING
+   分组后条件列表
+ORDER BY
+   排序字段列表
+LIMIT
+   分页参数
+   
+
+--查询多个字段
+SELECT 字段1，字段2， 字段3 FROM 表名；
+SELECT * FROM 表名；
+
+--设置别名
+SELECT 字段1 AS 别名1，字段2 AS 别名2 FROM 表名；
+
+--去除重复记录
+SELECT DISTINCT 字段列表 FROM 表名；
+
+--条件查询--
+--1， 查询年龄等于88的员工
+SELECT * FROM EMP WHERE AGE = 88;
+
+--2.查询年龄小于20的员工信息
+SELECT * FROM  EMP WHERE AGE < 20;
+
+--3. 查询年龄小于等于20的员工信息
+select * from emp where age <=20;
+
+--4. 查询没有身份证的员工信息
+select * from emp where idcard is null;
+
+--5. 查询有身份证号码的员工
+select * from emp where idcard is not null;
+
+--6. 查询年龄不等于88的员工
+SELECT * FROM EMP WHERE AGE != 88;
+SELECT * FROM EMP WHERE AGE <> 88;
+
+--7. 查询年龄在15（包含）到 20岁（包含）之间的员工信息
+SELECT * FROM EMP WHERE AGE >=15 && AGE <=20;
+SELECT * FROM EMP WHERE AGE >=15 AND AGE <=20；
+SELECT * FROM EMP WHERE AGE between 15 and 20;
+
+--8. 查询性别为女且年龄小于25的员工信息
+SELECT * FROM EMP WHERE GENDER = "女“ and age<25;
+
+--9. 查询年龄等于18 或 20 或 40 的员工信息
+select * from emp where age=18 or age=20 or age=40;
+select * from emp where age in(18,20,40);
+
+--10. 查询姓名为两个字的员工信息
+select * from emp where name like "__";
+
+11. 查询身份证号最后一位是X的员工信息
+SELECT * FROM EMP WHERE IDCARD LIKE "%X";
+
+--分组查询
+--1.根据性别分组，统计男员工 和 女员工的数量
+SELECT gender,count(*) from emp group by gender ;
+
+--2. 根据性别分组，统计男员工 和 女员工的的平均年龄
+SELECT gender,avg(age) from emp group by gender ;
+
+--3. 查询年龄小与45的员工，并根据员工的的地址分组，获取员工数量大于3的员工地址
+SELECT workaddress,count(*) from emp where age<45 group by workaddress having count(*)>=3;
+
+--排序查询
+--1. 根据年龄对公司的员工进行升序排序
+SELECT * FROM AGE ORDER BY AGE ASC;
+
+--2. 根据入职时间，对员工进行降序排序
+SELECT * FROM EMP ORDER BY ENTRYDATE DESC;
+
+--3.根据年龄对公司的员工进行升序排序，年龄相同，再对入职时间进行降序排列
+SELECT * FROM EMP ORDER BY AGE ASC, ENTRY DATE DESC;
+
+--DML 分页查询
+1. SELECT 字段列表 FROM 表名 LIMIT 起始索引，查询记录表；
+
+--分页查询
+--1.查询1页员工数据，每页展示10条记录
+select * from emp limit 10;
+
+--2.查询第2页员工数据，每页展示10条记录
+select * from emp limit 10,10;

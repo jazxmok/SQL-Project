@@ -1,0 +1,137 @@
+--函数 Function in SQL
+
+--字符串函数 (String Function SQL)
+CONCAT(S1,S2,...SN)
+LOWER(STR)
+UPPER(STR)
+LPAD(STR,N,PAD)
+RPAD(STR,N,PAD)
+TRIM(STR)
+SUBSTRING(STR,START,LEN)
+
+
+--CONCAT
+SELECT CONCAT("Hello","MySQL");
+
+--LOWER (CHANGE ALL WORD TO SMALL LETTER)
+SELECT LOWER ("HELLO");
+
+--UPPER (CHANGE ALL WORD TO CAPITAL LETTER)
+SELECT UPPER ("HELLO");
+
+--LPAD
+SELECT LPAD("01",5,"-");
+
+-RPAD
+SELECT RPAD("01",5,"-");
+
+--Trim (头部和尾部的空格）
+select trim('Hello  MySQL');
+
+--substring
+select substring("Hello MySQL",1,5);
+
+--由于业务的需求变更，企业员工的工号，统一为5位数，目前不足5位数的全部在前面补0.比如：1号员工的工号应该为00001。
+update emp set workno = lpad (workno, 5, "0")
+
+--数值函数 (Numeric Functions)
+CEIL(x)
+FLOOR(x)
+MOD(x,y)
+RAND()
+ROUND(x,y)
+
+--数值函数
+--ceil
+select ceil(1.5);
+
+--floor
+select floor(1.9);
+
+--mod
+select mod(3,4);
+
+--rand
+select rand();
+
+--round
+select round(2.34,2);
+
+--日期函数
+CURDATE()
+CURTIME()
+NOW()
+YEAR(DATE)
+MONTH(DATE)
+DAY(DATE)
+DAY_ADD(DATE,INTERVAL EXPR TYPE)
+DATEDIFF(DATE1,DATE2)
+
+--日期函数
+--curdate()
+select curdate();
+
+--curtime()
+select curtime();
+
+--now()
+select now();
+
+--YEAR , MONTH, DAY
+SELECT YEAR(NOW());
+
+SELECT MONTH(NOW());
+
+SELECT DAY(NOW());
+
+
+--date add
+select date_add(now(),INTERVAL 70 DAY);
+select date_add(now(),INTERVAL 70 MONTH);
+select date_add(now(),INTERVAL 70 YEAR);
+
+--DATEDIFF
+SELECT DATEDIFF("2021-12-01","2021-11-01");
+
+
+--查询所有员工的入职天数，并根据入职天数排序
+SELECT * FROM EMP;
+SELECT DATEDIFF(CURDATE(), ENTRYDATE) AS ENRTRYDAYS FROM EMP ORDER BY  ENTRYDAYS DESC;
+
+--流程函数（PROCESS FUNCTIONS)
+IF(VALUE ,T,F)
+IFNULL(VALUE1, VALUE2)
+CASE WHEN [VAL1] THEN [RES1] ... ELSE [DEFAULT] END
+CASE [EXPR] WHEN [VAL1] THEN [RES1] ... ELSE [DEFAULT] END
+
+--流程控制函数
+-- if
+select if(true , "ok", "error");
+
+
+--ifnull
+select ifnull("ok", "Default");
+
+select ifnull("", "Default");
+
+--case when then else end
+--需求：查询EMP表的员工姓名和工作地址(北京/上海---->一线城市，其他---->二线城市）
+SELECT 
+   NAME,
+  (WORKADDRESS WHEN "北京“ then ”一线城市“ when "上海” then "一线城市“ else ”二线城市“ end)as ”工作地址“
+FROM EMP;
+
+--小小题目：
+统计班级各个学员的成绩，展示的规则如下：
+- >=85, 展示优秀
+- >=60, 展示及格
+- 否则，展示不及格
+
+SELECT *FROM SCORE;
+SELECT 
+   ID,
+   NAME,
+  （CASE WHEN MATH>=85 THEN "优秀“ when math>=60 then ”及格“ end) as ”数学“，
+   （CASE WHEN ENGLISH>=85 THEN "优秀” when ENGLISH>=60 then ”及格“ end) as ”英语“，
+   （CASE WHEN CHINESE>=85 THEN "优秀” when CHINESE>=60 then ”及格“ end) as ”中文“，
+FROM SCORE;

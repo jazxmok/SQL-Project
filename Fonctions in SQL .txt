@@ -1,0 +1,267 @@
+--函数 Function in SQL
+
+--字符串函数 (String Function SQL)
+CONCAT(S1,S2,...SN)
+LOWER(STR)
+UPPER(STR)
+LPAD(STR,N,PAD)
+RPAD(STR,N,PAD)
+TRIM(STR)
+SUBSTRING(STR,START,LEN)
+
+
+--CONCAT
+SELECT CONCAT("Hello","MySQL");
+
+--LOWER (CHANGE ALL WORD TO SMALL LETTER)
+SELECT LOWER ("HELLO");
+
+--UPPER (CHANGE ALL WORD TO CAPITAL LETTER)
+SELECT UPPER ("HELLO");
+
+--LPAD
+SELECT LPAD("01",5,"-");
+
+-RPAD
+SELECT RPAD("01",5,"-");
+
+--Trim (头部和尾部的空格）
+select trim('Hello  MySQL');
+
+--substring
+select substring("Hello MySQL",1,5);
+
+--由于业务的需求变更，企业员工的工号，统一为5位数，目前不足5位数的全部在前面补0.比如：1号员工的工号应该为00001。
+update emp set workno = lpad (workno, 5, "0")
+
+--数值函数 (Numeric Functions)
+CEIL(x)
+FLOOR(x)
+MOD(x,y)
+RAND()
+ROUND(x,y)
+
+--数值函数
+--ceil
+select ceil(1.5);
+
+--floor
+select floor(1.9);
+
+--mod
+select mod(3,4);
+
+--rand
+select rand();
+
+--round
+select round(2.34,2);
+
+--日期函数
+CURDATE()
+CURTIME()
+NOW()
+YEAR(DATE)
+MONTH(DATE)
+DAY(DATE)
+DAY_ADD(DATE,INTERVAL EXPR TYPE)
+DATEDIFF(DATE1,DATE2)
+
+--日期函数
+--curdate()
+select curdate();
+
+--curtime()
+select curtime();
+
+--now()
+select now();
+
+--YEAR , MONTH, DAY
+SELECT YEAR(NOW());
+
+SELECT MONTH(NOW());
+
+SELECT DAY(NOW());
+
+
+--date add
+select date_add(now(),INTERVAL 70 DAY);
+select date_add(now(),INTERVAL 70 MONTH);
+select date_add(now(),INTERVAL 70 YEAR);
+
+--DATEDIFF
+SELECT DATEDIFF("2021-12-01","2021-11-01");
+
+
+--查询所有员工的入职天数，并根据入职天数排序
+SELECT * FROM EMP;
+SELECT DATEDIFF(CURDATE(), ENTRYDATE) AS ENRTRYDAYS FROM EMP ORDER BY  ENTRYDAYS DESC;
+
+--流程函数（PROCESS FUNCTIONS)
+IF(VALUE ,T,F)
+IFNULL(VALUE1, VALUE2)
+CASE WHEN [VAL1] THEN [RES1] ... ELSE [DEFAULT] END
+CASE [EXPR] WHEN [VAL1] THEN [RES1] ... ELSE [DEFAULT] END
+
+--流程控制函数
+-- if
+select if(true , "ok", "error");
+
+
+--ifnull
+select ifnull("ok", "Default");
+
+select ifnull("", "Default");
+
+--case when then else end
+--需求：查询EMP表的员工姓名和工作地址(北京/上海---->一线城市，其他---->二线城市）
+SELECT 
+   NAME,
+  (WORKADDRESS WHEN "北京“ then ”一线城市“ when "上海” then "一线城市“ else ”二线城市“ end)as ”工作地址“
+FROM EMP;
+
+--小小题目：
+统计班级各个学员的成绩，展示的规则如下：
+- >=85, 展示优秀
+- >=60, 展示及格
+- 否则，展示不及格
+
+SELECT *FROM SCORE;
+SELECT 
+   ID,
+   NAME,
+  （CASE WHEN MATH>=85 THEN "优秀“ when math>=60 then ”及格“ end) as ”数学“，
+   （CASE WHEN ENGLISH>=85 THEN "优秀” when ENGLISH>=60 then ”及格“ end) as ”英语“，
+   （CASE WHEN CHINESE>=85 THEN "优秀” when CHINESE>=60 then ”及格“ end) as ”中文“，
+FROM SCORE;
+
+--约束
+
+非空约束 - NOT NULL
+唯一约束 - UNIQUE
+主键约束 - PRIMARY KEY
+默认约束 - DEFAULT
+检查约束 - CHECK
+外键约束 - FOREIGN KEY
+
+--连接
+
+--内连接演示
+--1.查询每一个员工的姓名，及相关的部门的名称（隐藏内连接实践）
+--表结构:emp , dept
+--连接条件： emp.dept_id =dept.id
+
+select emp.name , dept.name from emp, dept where emp.dept_id = dept.id;
+
+select * from emp e, dept d where e.dept_id = d.id;
+
+--2.查询每一个员工的姓名，及相关的部门名称（显示内连接实践）---inner join --- on ---
+--表结构:emp , dept
+--连接条件： emp.dept_id =dept.id
+
+select e.name, d.name from emp e inner join dept d on e.dept.d = d.id;
+
+--外连接
+--1.查询emp表的所有数据，和对应的部门信息（左外连接）
+--表结构:emp , dept
+--连接条件： emp.dept_id =dept.id
+
+select e.* , d.name from emp e left outer join dept d on e.dept.id = d.id;
+
+
+--2.查询dept表的所有数据，和对应大的员工信息（右外连接）
+
+select e.* , d.name from emp e right outer join dept d on e.dept.id = d.id;
+
+--自连接
+
+--查询员工 及其 所属领导的名字
+--表结构： EMP
+
+select a.name, b.name from emp a, emp b where a.managerid = b.id;
+
+
+--2. 查询所有员工emp 及其他领导名字emp，如果员工没有领导，也需要查询出来
+--表结构： EMP
+
+select a.name , b.name from emp a left join emp b on a.managerid = b.id;
+
+--子查询
+
+--标准子查询
+--1 查询”销售部“的所有员工信息
+-- a.查询”销售部“部门ID	
+select id from dept where name="销售部";
+
+
+--b.查询在”方东白“入职之后的员工信息
+select id from emp where dept_id= (select id from dept where name="销售部”）；
+
+
+--2. 查寻在“方东白”入职之后的员工信息
+-- a. 查询 方东白 的入职日期
+select entrydate from emp where name"方东白“；
+
+--b.查询指定入职日期之后入职的员工信息
+select * from emp where entrydate >(select entrydate from emp where name"方东白“);
+
+--列子查询 
+
+
+IN
+NOT IN
+ANY
+SOME
+ALL
+
+--1.查询”销售部“和”市场部“的所有人员工信息
+--a.查询”销售部“和”市场部“的部门ID
+select id from dept where name =" 销售部” or name = "市场部“;
+
+--b.根据部门
+select * from emp where dept_id in (select id from dept where name =" 销售部” or name = "市场部“);
+
+
+--2.查询比财务部所有人工资都高的员工信息
+--a.查询所有财务部的人工工资
+select id from dept where name = ”财务部“；
+
+select salary from emp where dept_id =（select id from dept where name = ”财务部“；）
+
+
+--b.比财务部所有人工工资都高的员工信息
+select * from emp where salary > all(select salary from emp where dept_id =（select id from dept where name = ”财务部“；）)
+
+
+--3.查询比研发部其中任意一个人工资高的员工信息
+--a.查询研发部的所有人工资
+select salary from emp where dept_id =（select id from dept where name = ”研发部”）
+
+--b. 比研发部其中任意一个人工资都高员工的信息
+select * from  emp where salary > any (select salary from emp where dept_id =（select id from dept where name = ”研发部”）);
+
+--行字查询
+--1.查询与“张无忌”的薪资及直属领导相同的员工信息；
+--a.查询“张无忌”的薪资及直属领导
+SELECT SALARY, MANAGERID FROM EMP WHERE NAME ="张无忌”；
+
+--b.查询与“张无忌”的薪资及直属领导相同的员工信息
+SELECT * from emp where(salary,managerid)=(12500,1);
+
+SELECT * from emp where(salary,managerid)=(SELECT SALARY, MANAGERID FROM EMP WHERE NAME ="张无忌”);
+
+--表字查询
+--1.查询与“鹿杖客”，“宋远桥”的职位和薪资相同的员工信息
+-- a. 查询“鹿杖客”，“宋远桥”的职位和薪资
+select job,salary from emp where name ="“鹿杖客” or name ="宋远桥”;
+
+--b.查询与“鹿杖客”，“宋远桥”的职位和薪资相同的员工信息
+select * from emp where (job,salary) in (select job,salary from emp where name ="“鹿杖客” or name ="宋远桥”);
+
+--2.查询入职日期是“2006-01-01”之后的员工信息，及其他部门信息
+--a.入职日期是“2006-01-01”之后的员工信息
+select * from emp where entrydate > "2006-01-01";
+
+--b.查询这部分员工，对应的部门信息；
+select e.*,d。* from (select * from emp where entrydate > "2006-01-01")e left join dept d on e.dept_id = d.id;
